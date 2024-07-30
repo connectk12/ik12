@@ -4,7 +4,7 @@ import { API_KEY, BASE_URL, MAX_PAGES } from "./constants";
 import { responseJsonSchema, type FormItem } from "./schema";
 import logger from "./debug";
 
-type GetCampaignResponsesOpts = {
+export type GetCampaignResponsesOpts = {
   status?:
     | "active"
     | "pending"
