@@ -49,7 +49,7 @@ export const getCampaignResponses = async (
     searchParams.set("completedAtEnd", opts.completedAtEnd);
 
   let page = 1;
-  let nextPageAvailable = opts?.retrieveAllPages ?? false;
+  let nextPageAvailable = false;
   let data: FormItem[] = [];
 
   do {
@@ -84,11 +84,11 @@ export const getCampaignResponses = async (
         parsedResponse.data.meta.pagination.totalPages,
         maxPages
       );
-      const _maxPages = maxPages ?? totalPages;
       if (
         !opts?.page &&
-        (currentPage < totalPages || opts?.retrieveAllPages) &&
-        page < _maxPages
+        opts?.retrieveAllPages &&
+        currentPage < totalPages &&
+        page < totalPages
       ) {
         nextPageAvailable = true;
         page++;
