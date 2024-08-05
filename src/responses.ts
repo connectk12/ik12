@@ -1,27 +1,17 @@
 import fetch from "node-fetch";
 
 import { API_KEY, BASE_URL, MAX_PAGES } from "./constants";
-import { responseJsonSchema, type FormItem } from "./schema";
+import {
+  getCampaignResponsesOptsSchema,
+  getCampaignResponsesResponseSchema,
+  type FormItem,
+} from "./schema";
 import logger from "./debug";
+import { z } from "zod";
 
-export type GetCampaignResponsesOpts = {
-  status?:
-    | "active"
-    | "pending"
-    | "completed"
-    | "denied"
-    | "archived"
-    | "canceled";
-  firstSubmittedAtStart?: string;
-  firstSubmittedAtEnd?: string;
-  lastSubmittedAtStart?: string;
-  lastSubmittedAtEnd?: string;
-  completedAtStart?: string;
-  completedAtEnd?: string;
-  waitingOnStep?: string;
-  page?: number;
-  retrieveAllPages?: boolean;
-};
+export type GetCampaignResponsesOpts = z.infer<
+  typeof getCampaignResponsesOptsSchema
+>;
 
 export const getCampaignResponses = async (
   campaignId: string,
@@ -66,7 +56,8 @@ export const getCampaignResponses = async (
     logger.log("Response retrieved from IK12 API", searchParams);
     logger.verbose("Response JSON", responseJson);
 
-    const parsedResponse = responseJsonSchema.safeParse(responseJson);
+    const parsedResponse =
+      getCampaignResponsesResponseSchema.safeParse(responseJson);
     if (!parsedResponse.success) {
       throw new Error(
         "IK12 API response schema invalid" + parsedResponse.error
