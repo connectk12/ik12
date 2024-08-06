@@ -1,3 +1,4 @@
+import { parse } from "path";
 import type { FormItem } from "./schema";
 
 type SanitizeTextOpts = {
@@ -64,17 +65,27 @@ export const sanitizeText = <T extends string | (string | undefined)>(
  *
  * @returns {string | undefined} - The value of the specified field, optionally sanitized.
  */
-export const getValueFromField = (
+export const getValueFromField = <T extends string | number | undefined>(
   form: FormItem,
   fieldNumber: number,
-  opts?: { sanitize: boolean; sanitizeOpts?: SanitizeTextOpts }
-) => {
-  const field = form.fields.find((field) => field.number === fieldNumber);
-  if (!field) return;
-  if (opts?.sanitize) {
-    return sanitizeText(field.value);
+  opts?: {
+    sanitize: boolean;
+    sanitizeOpts?: SanitizeTextOpts;
+    castValueType?: "string" | "number";
   }
-  return field.value;
+): T => {
+  const field = form.fields.find((field) => field.number === fieldNumber);
+  if (!field) return undefined as T;
+  let value: string | number = field.value;
+  if (opts?.sanitize) {
+    value = sanitizeText(field.value);
+    return value as T;
+  }
+  if (field.value && opts?.castValueType === "number") {
+    value = parseFloat(field.value);
+    return value as T;
+  }
+  return value as T;
 };
 
 /**
