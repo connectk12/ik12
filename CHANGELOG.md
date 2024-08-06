@@ -1,5 +1,12 @@
 # @connectk12/ik12
 
+## 0.0.5
+
+### Patch Changes
+
+- 90e66b2: Update README
+- 4020db7: Add getValueFromFieldAsNumber instead of casting from getValueFromField. Update return types.
+
 ## 0.0.4
 
 ### Patch Changes
