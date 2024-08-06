@@ -62,6 +62,7 @@ export const sanitizeText = <T extends string | (string | undefined)>(
  * @param {Object} [opts] - Options to customize the retrieval process.
  * @param {boolean} [opts.sanitize=false] - Whether to sanitize the field value.
  * @param {SanitizeTextOpts} [opts.sanitizeOpts] - Options to customize the sanitization process.
+ * @param {boolean} [opts.castToNumber=false] - Whether to cast the value to a number.
  *
  * @returns {string | undefined} - The value of the specified field, optionally sanitized.
  */
@@ -71,7 +72,7 @@ export const getValueFromField = <T extends string | number | undefined>(
   opts?: {
     sanitize: boolean;
     sanitizeOpts?: SanitizeTextOpts;
-    castValueType?: "string" | "number";
+    castToNumber?: boolean;
   }
 ): T => {
   const field = form.fields.find((field) => field.number === fieldNumber);
@@ -81,7 +82,7 @@ export const getValueFromField = <T extends string | number | undefined>(
     value = sanitizeText(field.value);
     return value as T;
   }
-  if (field.value && opts?.castValueType === "number") {
+  if (field.value && opts?.castToNumber) {
     value = parseFloat(field.value);
     return value as T;
   }
