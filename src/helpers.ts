@@ -1,4 +1,3 @@
-import { parse } from "path";
 import type { FormItem } from "./schema";
 
 type SanitizeTextOpts = {
@@ -66,27 +65,41 @@ export const sanitizeText = <T extends string | (string | undefined)>(
  *
  * @returns {string | undefined} - The value of the specified field, optionally sanitized.
  */
-export const getValueFromField = <T extends string | number | undefined>(
+export const getValueFromField = (
   form: FormItem,
   fieldNumber: number,
   opts?: {
     sanitize: boolean;
     sanitizeOpts?: SanitizeTextOpts;
-    castToNumber?: boolean;
   }
-): T => {
+): string | undefined => {
   const field = form.fields.find((field) => field.number === fieldNumber);
-  if (!field) return undefined as T;
-  let value: string | number = field.value;
+  if (!field) return;
+  let value: string = field.value;
   if (opts?.sanitize) {
     value = sanitizeText(field.value);
-    return value as T;
   }
-  if (field.value && opts?.castToNumber) {
-    value = parseFloat(field.value);
-    return value as T;
-  }
-  return value as T;
+  return value;
+};
+/**
+ * Get Value From Field As Number
+ *
+ * This function retrieves the value of a specified field from a form parsed as a number.
+ *
+ * @param {FormItem} form - The form object containing the fields.
+ * @param {number} fieldNumber - The number of the field to retrieve the value from.
+ *
+ * @returns {number | undefined} - The value of the specified field, optionally sanitized.
+ */
+export const getValueFromFieldAsNumber = (
+  form: FormItem,
+  fieldNumber: number
+): number | undefined => {
+  const field = form.fields.find((field) => field.number === fieldNumber);
+  if (!field) return;
+  const value: string = field.value;
+  const valueAsNumber = parseFloat(value);
+  return valueAsNumber;
 };
 
 /**
@@ -107,7 +120,7 @@ export const getArrayFromField = (
   form: FormItem,
   fieldNumbers: number[],
   opts?: { sanitize: boolean; sanitizeOpts?: SanitizeTextOpts }
-) => {
+): string[] => {
   const fields = form.fields.filter((field) =>
     fieldNumbers.includes(field.number)
   );
