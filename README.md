@@ -136,6 +136,21 @@ getValueFromField(form, fieldNumber, opts)
 | `sanitize`     | Boolean | If true, the value will be sanitized to remove any symbols and special characters. Default is `true`                                     |
 | `sanitizeOpts` | Object  | Options for sanitize function. Possible keys are `removeSpecialChars` (boolean), `removeWhitespace` (boolean), and `uppercase` (boolean) |
 
+### getValueFromFieldAsNumber
+
+This function retrieves the value of a field from a response and returns it as a number (with parseFloat).
+
+```javascript
+getValueFromFieldAsNumber(form, fieldNumber, opts)
+```
+
+#### Required Parameters
+
+| Parameter     | Type   | Description                                  |
+| ------------- | ------ | -------------------------------------------- |
+| `form`        | Object | The form object from the response.           |
+| `fieldNumber` | Number | The field number to retrieve the value from. |
+
 
 ### getArrayFromField
 
