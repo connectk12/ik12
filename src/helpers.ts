@@ -37,7 +37,7 @@ export const sanitizeText = <T extends string | (string | undefined)>(
       sanitizedText = sanitizedText.replace(/[^a-zA-Z0-9\s]/g, "");
     }
     if (opts.removeWhitespace) {
-      sanitizedText = sanitizedText.replace(/\s+/g, " ");
+      sanitizedText = sanitizedText.replace(/\s+/g, "");
     }
     if (opts.uppercase) {
       sanitizedText = sanitizedText.toLocaleUpperCase();
