@@ -1,5 +1,11 @@
 # @connectk12/ik12
 
+## 0.0.6
+
+### Patch Changes
+
+- bedfec0: Resolve issue with sanitizeText opts.removeWhitespace
+
 ## 0.0.5
 
 ### Patch Changes
